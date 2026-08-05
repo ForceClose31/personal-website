@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
 
   let showFogOverlay = true;
@@ -7,7 +7,7 @@
     const scrollPosition = window.innerHeight + window.scrollY;
     const pageHeight = document.documentElement.scrollHeight;
     
-    if (scrollPosition >= pageHeight - 1) {
+    if (scrollPosition >= pageHeight - 10) {
       showFogOverlay = false;
     } else {
       showFogOverlay = true;
@@ -15,7 +15,8 @@
   }
 
   onMount(() => {
-    window.addEventListener('scroll', checkScrollPosition);
+    window.addEventListener('scroll', checkScrollPosition, { passive: true });
+    checkScrollPosition();
 
     return () => {
       window.removeEventListener('scroll', checkScrollPosition);
@@ -24,7 +25,7 @@
 </script>
 
 {#if showFogOverlay}
-  <div class="fog-overlay"></div>
+  <div class="fog-overlay pointer-events-none"></div>
 {/if}
 
 <style>
@@ -33,9 +34,10 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 35vh;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    height: 25vh;
+    background: linear-gradient(to top, var(--bg-primary), transparent);
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    z-index: 15;
   }
 </style>

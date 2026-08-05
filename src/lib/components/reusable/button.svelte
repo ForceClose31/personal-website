@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let text = "";
   export let Class = "";
   export let link = "";
@@ -8,19 +8,16 @@
 {#if link}
   <a href={link} target="_blank" rel="noopener noreferrer">
     <button 
-        class={`rounded-[30px] mt-10 w-[150px] h-[45px] ${Class}`} 
+      class={`rounded-full px-6 py-2.5 min-w-[140px] font-bold text-sm bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 shadow-md ${Class}`} 
       data-aos="fade-up"
       on:click={onClick}
     >
       {text}
     </button>
   </a>
-{/if}
-
-{#if !link}
-  <!-- If no link is provided, the button will function normally -->
+{:else}
   <button 
-    class={`rounded-[30px] mt-10 w-[150px] h-[45px] ${Class}`} 
+    class={`rounded-full px-6 py-2.5 min-w-[140px] font-bold text-sm bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-color)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 shadow-md ${Class}`} 
     data-aos="fade-up"
     on:click={onClick}
   >
