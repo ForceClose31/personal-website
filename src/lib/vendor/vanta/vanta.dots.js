@@ -1,3 +1,4 @@
+// @ts-nocheck
 import VantaBase, {VANTA} from './_base.js'
 import {rn, ri, sample, mobileCheck} from './helpers.js'
 

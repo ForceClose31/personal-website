@@ -1,307 +1,202 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-    import Button from "$lib/components/reusable/button.svelte";  
+  import { onMount, afterUpdate } from 'svelte';
+  import Button from "$lib/components/reusable/button.svelte";  
   import Typewriter from '$lib/components/reusable/typer.svelte';
-    import Heading from '$lib/components/reusable/heading.svelte';
-    interface TechStackItem {
-        icon: string;
-        name: string;
+  import Heading from '$lib/components/reusable/heading.svelte';
+  import { projectsStore, type Project } from '$lib/stores/projects';
+
+  let projects: Project[] = [];
+  let swiperInstance: any = null;
+
+  const unsubscribe = projectsStore.subscribe((value) => {
+    projects = value;
+  });
+
+  function initSwiper() {
+    if (typeof Swiper !== 'undefined') {
+      if (swiperInstance) {
+        swiperInstance.destroy(true, true);
+      }
+      swiperInstance = new Swiper('.mySwiper2', {
+        grabCursor: true,
+        effect: 'creative',
+        creativeEffect: {
+          prev: {
+            shadow: true,
+            translate: ['-120%', 0, -300],
+          },
+          next: {
+            shadow: true,
+            translate: ['120%', 0, -300],
+          },
+        },
+        slidesPerView: 'auto',
+        loop: false,
+        centeredSlides: true,
+        speed: 600,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
     }
+  }
 
-    interface ProjectLinks {
-        live?: string;   
-        github?: string; 
+  onMount(() => {
+    initSwiper();
+    return () => {
+      unsubscribe();
+      if (swiperInstance) swiperInstance.destroy();
+    };
+  });
+
+  afterUpdate(() => {
+    // Re-init swiper if project list changes length
+    if (swiperInstance && swiperInstance.slides && swiperInstance.slides.length !== projects.length) {
+      setTimeout(initSwiper, 100);
     }
-
-    interface Project {
-        title: string;
-        description: string;
-        solves: string[];
-        status: string;
-        techStack: TechStackItem[];
-        links: ProjectLinks;
-        image?: string;      
-    }
-
-const projects: Project[] = [
-    {
-        title: 'Backend Roompi',
-        description: 'This coding is the backend of a mobile application called roompi, this backend uses Laravel to be used as an API which will later be integrated into the mobile application.',
-        solves: ['API Application', 'Course Application', 'Backend Roompi'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'php', name: 'PHP' },
-            { icon: 'laravel', name: 'Laravel' }
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/backend-roompi.git',
-        },
-        image: 'https://play-lh.googleusercontent.com/saDCIVTLBu7rZofJ9FypwO7KAQnZdEIcbWd-1wI5lZh_XIGliSm2noTUlGvqvK9Gws4=w480-h960-rw',
-    },
-    {
-        title: 'Mantab',
-        description: 'This great application is aimed at sheep farmers, where in this application farmers can monitor their sheep in an organized and regular manner.',
-        solves: ['Mobile Application', 'Farmer Application', 'Flutter Project'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'flutter', name: 'Flutter' },
-            { icon: 'dart', name: 'Dart' }
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/Mantab.git',
-        },
-        image:
-        'https://github.com/ForceClose31/template/blob/main/Sempol%20Sejahtera%201.png?raw=true',
-    },
-    {
-        title: 'Subur',
-        description: 'This Subur application is used by rice farmers so they can detect diseases in their rice plants and carry out early treatment and prevention on their rice plants.',
-        solves: ['Mobile Application', 'Farmer Application', 'Machine Learning Integration'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'kotlin', name: 'Kotlin' },
-            { icon: 'python', name: 'Python' },
-            { icon: 'express', name: 'Express JS' },
-        ],
-        links: {
-            live: 'https://youtube.com/shorts/8Nr7qW2GpMg?si=4WWVD0_ej_Y6kO3X',
-            github: 'https://github.com/ForceClose31/subur.git',
-        },
-        image:
-        'https://github.com/ForceClose31/subur/blob/main/Group%201.png?raw=true',
-    },
-    {
-        title: 'Si-Klinik',
-        description: 'Si-Klinik is a health website for health workers at the Jember Paru clinic, where on this website health workers can record patients, determine the type of disease, medication, and medical record history.',
-        solves: ['Website Development', 'PHP', 'Medical Website'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'js', name: 'JavaScript' },
-            { icon: 'laravel', name: 'Laravel' },
-            { icon: 'php', name: 'PHP' },
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/si-klinik.git',
-        },
-        image: 'https://github.com/ForceClose31/template/blob/main/s200_klinik%201.png?raw=true',
-    },
-    {
-        title: 'Sortcoff',
-        description: 'Sortcoff is a mobile application integrated with IOT with the function of sorting coffee beans according to color and size. This application is intended for coffee bean farmers who still have difficulty sorting their coffee beans.',
-        solves: ['Mobile Application', 'Farmer Application', 'IOT Integration'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'flutter', name: 'Flutter' },
-            { icon: 'dart', name: 'Dart' },
-            { icon: 'c', name: 'C++' },
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/sortcoff.git',
-        },
-        image: 'https://github.com/ForceClose31/template/blob/main/Sort_Coff-removebg-preview%201.png?raw=true',
-    },
-    {
-        title: 'API Easy Vote',
-        description: 'This Easy Vote API is used for the Easy Vote website and is integrated with blockchain with the aim of making the backend of this website implement the concept of decentralization when users vote on nominated candidates.',
-        solves: ['API Integration', 'Blockchain', 'Backend Development'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'express', name: 'Express JS' },
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/api-easy-vote.git',
-        },
-        image: 'https://alexanderfo.com/wp-content/uploads/2019/12/1139px-Cloud-API-Logo.svg_.png',
-    },
-    {
-        title: 'HardHat Easy Vote',
-        description: 'This is a continuation of the Easy Vote API where in this project there is a smart contract integrated with the blockchain using hardhat and solidity for the smart contract.',
-        solves: ['Blockchain', 'Smart Contract', 'Solidity'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'javascript', name: 'Javascript' },
-            { icon: 'solidity', name: 'Solidity' },
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/easy-vote-hardhat.git',
-        },
-        image: 'https://raw.githubusercontent.com/codetesla51/web-site-files/main/images/fc1943b8-2cde-409e-b3a9-b6f5b7129ecf.jpeg',
-    },
-    {
-        title: 'Linguabond',
-        description: 'This application is used for English courses for children. This application also has a face-to-face meeting feature with a mentor and there is also a point system.',
-        solves: ['Mobile Application', 'Course Application', 'Flutter Project'],
-        status: 'Completed',
-        techStack: [
-            { icon: 'flutter', name: 'Flutter' },
-            { icon: 'dart', name: 'Dart' },
-        ],
-        links: {
-            github: 'https://github.com/ForceClose31/linguabond.git',
-        },
-        image: 'https://github.com/ForceClose31/template/blob/main/snapedit_1711770890291-removebg-preview%208.png?raw=true',
-    },
-];
-
-    onMount(() => {
-        new Swiper('.mySwiper2', {
-            grabCursor: true,
-            effect: 'creative',
-            creativeEffect: {
-                prev: {
-                    shadow: true,
-                    translate: ['-120%', 0, -500],
-                },
-                next: {
-                    shadow: true,
-                    translate: ['120%', 0, -500],
-                },
-            },
-            slidesPerView: 'auto', 
-            loop: false, 
-            centeredSlides: true,
-            speed: 600, 
-            navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 1,
-                },
-                768: {
-                    slidesPerView: 1,
-                },
-                1024: {
-                    slidesPerView: 1,
-                },
-            },
-        });
-    });
+  });
 </script>
 
-
-
-<section id="projects">
-    <!-- Heading Component -->
-<Heading 
+<section id="projects" class="py-16">
+  <!-- Heading Component -->
+  <Heading 
     heading="Featured Projects" 
     subheading="Showing off my latest Projects" 
     subicon="fas fa-briefcase" 
-/>
-<Typewriter 
-  Class="text-center font-medium text-xl mt-14 leading-relaxed"
-  text="I have worked on many projects. Here are some of the projects I have completed. Swipe left or right or click the arrow buttons to navigate."
-  typingSpeed={50}
-  replay={false} 
-/>
-    <div class="swiper-container mySwiper2">
-        <div class="swiper-wrapper " data-aos="fade-down">
-            {#each projects as project}
-                <div class="swiper-slide flex justify-center items-center">
-                    
-                    <div class="px-4 py-4 bg-bg rounded xl:w-[600px] w-[560px] md:w-[550px]  mt-24">
-                        <div>
-                            <h2 class="text-gradient text-4xl md-3 mt-3
-                            font-black" data-aos="fade-right">{project.title}</h2>
-                            
-                            {#if project.image}
-                                <img data-aos=fade-down class="tech-icon
-                                h-[25rem] w-full  mt-4 mb-4 rounded"
-                                    src={project.image}
-                                    alt="Project Image" /> 
-                            {:else}
-                                <p class="text-red-500 mt-4 mb-4">Image not available</p>
-                            {/if}
+  />
+  
+  <Typewriter 
+    Class="text-center font-medium text-lg mt-8 leading-relaxed max-w-2xl mx-auto"
+    text="I have worked on many projects. Here are some of the projects I have completed. Swipe or use navigation buttons."
+    typingSpeed={50}
+    replay={false} 
+  />
 
-                            <p data-aos="zoom-in" class="mt-4 mb-4 leading-relaxed text-xl">{project.description}</p>
-                        </div>
-                        <div class="line w-full h-[1px] bg-br opacity-40"></div>
-                        <div class="flex mt-4 mb-4" data-aos="fade-down">
-                            <div class="flex items-center">
-                                <p class="text-xl">Tags:</p>
-                                <div class="flex justify-center gap-4 ml-4">
-                                    {#each project.solves as solve}
-                                        <p class="bgt text-base font-medium">{solve}</p>
-                                    {/each}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center"
-                        data-aos="fade-up">
-                            <div class="flex items-center gap-3">
-                                <p class="text-xl">Status:</p>
-                                <p class={project.status === 'Completed' ? 'text-green-400' : 'text-yellow-400'}>
-                                    {project.status}
-                                </p>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-3 mb-3 mt-3"
-                                data-aos="fade-left">
-                                    <p class="text-xl">Tech Stack:</p>
-                                    <div class="flex justify-center gap-3">
-                                        {#each project.techStack as stack}
-                                            <div class="flex flex-col items-center">
-                                                <img class="tech-icon w-[25px]"
-                                                    src={`https://skillicons.dev/icons?i=${stack.icon}`}
-                                                    alt={stack.name} />
-                                            </div>
-                                        {/each}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+  <div class="swiper-container mySwiper2 mt-8">
+    <div class="swiper-wrapper py-6">
+      {#each projects as project (project.id)}
+        <div class="swiper-slide flex justify-center items-center px-2">
+          <div class="w-full max-w-[460px] md:max-w-[480px] bg-neutral-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl transition-all duration-300 hover:border-emerald-500/30 group">
+            
+            <!-- Header & Title -->
+            <div class="flex justify-between items-start gap-2 mb-3">
+              <h3 class="text-2xl font-bold text-gradient group-hover:text-emerald-400 transition-colors line-clamp-1">
+                {project.title}
+              </h3>
+              <span class={`text-xs px-2.5 py-1 rounded-full font-medium border ${project.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}`}>
+                {project.status}
+              </span>
+            </div>
 
-                        <!-- Buttons with Conditional Logic -->
-                        <div class="flex gap-4 items-center mt-4 mb-4"
-                        data-aos="fade-right">
-                            <a href={project.links.live} target="_blank" rel="noopener noreferrer"><button 
-                                class="w-[130px] px-3 h-[35px] text-white
-                                disabled:opacity-40" 
-                                on:click={() => window.open(project.links.live, '_blank')}
-                                disabled={!project.links.live}
-                            >
-                                {project.links.live ? 'Live Demo' : 'Not Available'}
-                            </button>
-                            </a>
-                            <a href={project.links.github} target="_blank" rel="noopener noreferrer">
-                            <button 
-                                class="w-[130px] px-3 h-[35px] text-white
-                                disabled:opacity-40" 
-                                on:click={() => window.open(project.links.github, '_blank')}
-                                disabled={!project.links.github}
-                            >
-                                {project.links.github ? 'GitHub Repo' : 'Not Available'}
-                            </button>
-                            </a>
-                        </div>
-                    </div>
+            <!-- Image preview -->
+            {#if project.image}
+              <div class="relative w-full h-44 md:h-48 overflow-hidden rounded-xl bg-black/40 mb-4 border border-white/5">
+                <img 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  src={project.image}
+                  alt={project.title} 
+                />
+              </div>
+            {:else}
+              <div class="w-full h-36 rounded-xl bg-neutral-800 flex items-center justify-center text-neutral-500 text-sm mb-4">
+                No Preview Image
+              </div>
+            {/if}
+
+            <!-- Description -->
+            <p class="text-neutral-300 text-sm leading-relaxed mb-4 line-clamp-3">
+              {project.description}
+            </p>
+
+            <div class="h-[1px] w-full bg-white/10 my-3"></div>
+
+            <!-- Tags / Solves -->
+            <div class="flex flex-wrap items-center gap-1.5 mb-3">
+              <span class="text-xs text-neutral-400 font-semibold mr-1">Tags:</span>
+              {#each project.solves as solve}
+                <span class="text-xs px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-neutral-300 font-medium">
+                  {solve}
+                </span>
+              {/each}
+            </div>
+
+            <!-- Tech Stack & Links -->
+            <div class="flex justify-between items-center pt-2 border-t border-white/5">
+              <!-- Tech Stack Icons -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs text-neutral-400 font-semibold mr-1">Tech:</span>
+                <div class="flex items-center gap-1.5">
+                  {#each project.techStack as stack}
+                    <img 
+                      class="w-6 h-6 object-contain hover:scale-110 transition-transform"
+                      src={`https://skillicons.dev/icons?i=${stack.icon}`}
+                      alt={stack.name} 
+                      title={stack.name}
+                    />
+                  {/each}
                 </div>
-            {/each}
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex gap-2">
+                {#if project.links.github}
+                  <a 
+                    href={project.links.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="px-3 py-1.5 text-xs font-semibold rounded-full bg-white/10 hover:bg-white/20 text-white transition-all flex items-center gap-1 border border-white/10"
+                  >
+                    <i class="fab fa-github"></i> Repo
+                  </a>
+                {/if}
+                {#if project.links.live}
+                  <a 
+                    href={project.links.live} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="px-3 py-1.5 text-xs font-semibold rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black hover:opacity-90 transition-all flex items-center gap-1"
+                  >
+                    <i class="fas fa-external-link-alt text-[10px]"></i> Live
+                  </a>
+                {/if}
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+      {/each}
     </div>
-    <div class="flex flex-col justify-center items-center">
-<Typewriter 
-  Class="text-center font-medium text-xl mt-14 leading-relaxed"
-  text="Explore more of my work on GitHub. Click the button below to check it out."
-  typingSpeed={50}
-  replay={false} 
-/>
-      <Button
+    
+    <!-- Custom Swiper Navigation Controls -->
+    <div class="swiper-button-next text-emerald-400"></div>
+    <div class="swiper-button-prev text-emerald-400"></div>
+  </div>
+
+  <div class="flex flex-col justify-center items-center mt-10">
+    <Typewriter 
+      Class="text-center font-medium text-lg mb-4 leading-relaxed"
+      text="Explore more of my work on GitHub. Click the button below to check it out."
+      typingSpeed={50}
+      replay={false} 
+    />
+    <Button
       text="Github"
       link="https://github.com/ForceCLose31"
-      />
-
-</div>
-
+    />
+  </div>
 </section>
+
 <style>
   .mySwiper2 {
     width: 100%;
-    height: 100%;
-    overflow: hidden; 
-}
-
+    overflow: hidden;
+    padding-bottom: 2rem;
+  }
+  
+  :global(.swiper-button-next),
+  :global(.swiper-button-prev) {
+    color: #27ea66 !important;
+    transform: scale(0.7);
+  }
 </style>

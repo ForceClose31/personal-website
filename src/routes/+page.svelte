@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import Home from '$lib/components/sections/home.svelte';
   import Stack from '$lib/components/sections/stack.svelte';
@@ -6,6 +6,7 @@
   import Overlay from '$lib/components/reusable/overlay.svelte';
   import Contact from '$lib/components/sections/contact.svelte';
   import Loader from "$lib/components/reusable/prelaoder.svelte";
+  import ParallaxBackground from '$lib/components/reusable/parallaxBackground.svelte';
 
   let isLoading = true;
 
@@ -17,7 +18,7 @@
 
   setTimeout(() => {
     isLoading = false;
-  }, 5000);
+  }, 3000);
 </script>
 
 {#if isLoading}
@@ -26,9 +27,15 @@
 
 <!-- Page content -->
 {#if !isLoading}
+  <!-- Hero Section -->
   <Home />
-  <Stack />
-  <Project />
-  <Contact />
+
+  <!-- Parallax Sections (Tech Stack up to before Footer) -->
+  <ParallaxBackground>
+    <Stack />
+    <Project />
+    <Contact />
+  </ParallaxBackground>
+
   <Overlay />
 {/if}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   export let text = ""; 
   export let typingSpeed = 100; 
@@ -6,9 +6,9 @@
   export let Class = "";
   let displayedText = "";
   let currentIndex = 0;
-  let observer;
+  let observer: IntersectionObserver | null = null;
   let textVisible = false;
-  let sectionRef;
+  let sectionRef: HTMLElement | null = null;
 
   function typeText() {
     if (currentIndex < text.length) {

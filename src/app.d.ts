@@ -8,6 +8,11 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	var Swiper: any;
+	var THREE: any;
+	var VANTA: any;
 }
+
+declare module 'aos';
 
 export {};
