@@ -49,7 +49,7 @@
     const isLight = currentTheme === 'light';
 
     const col1 = isLight ? new THREE.Color('#0284c7') : new THREE.Color('#10b981');
-    const col2 = isLight ? new THREE.Color('#4f46e5') : new THREE.Color('#38bdf8');
+    const col2 = isLight ? new THREE.Color('#059669') : new THREE.Color('#38bdf8');
     const col3 = isLight ? new THREE.Color('#334155') : new THREE.Color('#6366f1');
 
     const streamCol = streamGeo.attributes.color.array as Float32Array;
@@ -73,8 +73,8 @@
     cloudGeo.attributes.color.needsUpdate = true;
 
     if (streamMat && cloudMat) {
-      streamMat.opacity = isLight ? 0.45 : 0.65;
-      cloudMat.opacity = isLight ? 0.3 : 0.45;
+      streamMat.opacity = isLight ? 0.35 : 0.65;
+      cloudMat.opacity = isLight ? 0.25 : 0.45;
       streamMat.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
       cloudMat.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
     }
@@ -126,6 +126,7 @@
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setClearColor(0x000000, 0); // Fully transparent background canvas!
     containerEl.appendChild(renderer.domElement);
 
     particleTexture = createGlowTexture();

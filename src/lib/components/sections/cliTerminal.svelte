@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import Heading from '$lib/components/reusable/heading.svelte';
   import { themeStore } from '$lib/stores/theme';
 
@@ -126,19 +125,19 @@
     subicon="fas fa-terminal" 
   />
 
-  <p class="text-center font-medium text-sm sm:text-base mt-2 mb-8 leading-relaxed max-w-xl mx-auto text-neutral-400 px-4">
+  <p class="text-center font-medium text-sm sm:text-base mt-2 mb-8 leading-relaxed max-w-xl mx-auto text-[var(--text-secondary)] px-4">
     Query system commands, developer skills, and project telemetry directly from the interactive shell.
   </p>
 
   <div class="max-w-4xl mx-auto px-4">
     <!-- Quick Command Pill Buttons -->
     <div class="flex flex-wrap gap-2 justify-center mb-4">
-      <span class="text-xs text-neutral-400 self-center mr-1 font-mono">Quick Run:</span>
+      <span class="text-xs text-[var(--text-muted)] self-center mr-1 font-mono">Quick Run:</span>
       {#each ['help', 'about', 'skills', 'projects', 'contact', 'theme', 'clear'] as qCmd}
         <button
           type="button"
           on:click={() => runCmd(qCmd)}
-          class="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all hover:scale-105"
+          class="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 transition-all hover:scale-105"
         >
           {qCmd}
         </button>
@@ -146,16 +145,16 @@
     </div>
 
     <!-- Terminal Window Container -->
-    <div class="glass-card rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black/90">
+    <div class="glass-card rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-2xl bg-[var(--bg-card)]">
       <!-- Window Titlebar -->
-      <div class="px-5 py-3 bg-neutral-900/90 border-b border-white/10 flex justify-between items-center">
+      <div class="px-5 py-3 bg-[var(--bg-secondary)] border-b border-[var(--border-color)] flex justify-between items-center">
         <div class="flex items-center gap-2">
           <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
           <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
           <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
-          <span class="font-mono text-xs text-neutral-400 ml-2">bash - visitor@nur-bashori-cli:~</span>
+          <span class="font-mono text-xs text-[var(--text-muted)] ml-2">bash - visitor@nur-bashori-cli:~</span>
         </div>
-        <div class="flex items-center gap-1.5 text-xs text-emerald-400 font-mono">
+        <div class="flex items-center gap-1.5 text-xs text-emerald-500 font-mono">
           <i class="fas fa-terminal text-xs"></i>
           <span>BASH 5.2</span>
         </div>
@@ -164,20 +163,20 @@
       <!-- Terminal Output Screen -->
       <div
         bind:this={terminalBoxRef}
-        class="font-mono p-5 min-h-[260px] max-h-[360px] overflow-y-auto text-xs sm:text-sm leading-relaxed text-neutral-200"
+        class="font-mono p-5 min-h-[260px] max-h-[360px] overflow-y-auto text-xs sm:text-sm leading-relaxed text-[var(--text-primary)]"
       >
         {#each history as item}
           <div
             class={`mb-2.5 whitespace-pre-wrap ${
               item.type === 'user'
-                ? 'text-emerald-400 font-semibold'
+                ? 'text-emerald-500 font-semibold'
                 : item.type === 'error'
-                ? 'text-red-400'
+                ? 'text-red-500 font-semibold'
                 : item.type === 'info'
-                ? 'text-neutral-400'
+                ? 'text-[var(--text-secondary)]'
                 : item.type === 'system'
-                ? 'text-cyan-400 font-bold'
-                : 'text-neutral-200'
+                ? 'text-cyan-500 font-bold'
+                : 'text-[var(--text-primary)]'
             }`}
           >
             {item.text}
@@ -185,16 +184,16 @@
         {/each}
 
         <!-- Prompt Line -->
-        <div class="flex items-center gap-2 mt-3 pt-2 border-t border-white/5">
-          <span class="text-emerald-400 font-bold font-mono">visitor@nur-bashori:~$</span>
+        <div class="flex items-center gap-2 mt-3 pt-2 border-t border-[var(--border-color)]">
+          <span class="text-emerald-500 font-bold font-mono">visitor@nur-bashori:~$</span>
           <input
             type="text"
             bind:value={inputVal}
             on:keydown={handleKeyDown}
             placeholder="type 'help', 'skills', 'projects', 'contact'..."
-            class="flex-1 bg-transparent border-none outline-none text-white font-mono text-xs sm:text-sm focus:ring-0"
+            class="flex-1 bg-transparent border-none outline-none text-[var(--text-primary)] font-mono text-xs sm:text-sm focus:ring-0 placeholder-[var(--text-muted)]"
           />
-          <span class="text-xs text-neutral-500 font-mono hidden sm:inline">Press Enter ↵</span>
+          <span class="text-xs text-[var(--text-muted)] font-mono hidden sm:inline">Press Enter ↵</span>
         </div>
       </div>
     </div>

@@ -60,9 +60,9 @@
     <div class="swiper-container swiper-right w-full px-4 py-6 flex opacity-90 justify-center items-center">
       <div class="swiper-wrapper flex justify-center gap-5">
         {#each techStackRight as stack}
-          <div class="swiper-slide flex justify-start items-center gap-4 w-[210px] p-4 bg-neutral-900/80 backdrop-blur-xl border border-white/10 hover:border-emerald-500/40 hover:bg-emerald-500/10 rounded-2xl shadow-xl transition-all group">
+          <div class="swiper-slide flex justify-start items-center gap-4 w-[210px] p-4 bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-color)] hover:border-emerald-500/40 hover:bg-emerald-500/10 rounded-2xl shadow-lg transition-all group">
             <img class="tech-icon w-10 h-10 object-contain group-hover:scale-110 transition-transform" src={`https://skillicons.dev/icons?i=${stack.icon}`} alt={stack.name} /> 
-            <h4 class="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors">{stack.name}</h4>
+            <h4 class="font-bold text-lg text-[var(--text-primary)] group-hover:text-emerald-500 transition-colors">{stack.name}</h4>
           </div>
         {/each}
       </div>
@@ -70,7 +70,7 @@
   </div>
   
   <div class="max-w-2xl mx-auto px-4 text-center mt-10">
-    <p class="font-medium text-base sm:text-lg leading-relaxed text-neutral-300">
+    <p class="font-medium text-base sm:text-lg leading-relaxed text-[var(--text-secondary)]">
       I am constantly exploring and mastering the latest tools and technologies to create scalable, high-performance applications.
     </p>
   </div>
