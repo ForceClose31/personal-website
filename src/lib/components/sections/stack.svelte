@@ -1,6 +1,5 @@
 <script lang="ts">
   import Heading from '$lib/components/reusable/heading.svelte';
-  import Typewriter from '$lib/components/reusable/typer.svelte';
   import { onMount } from 'svelte';
 
   interface TechStack {
@@ -70,13 +69,10 @@
     </div>
   </div>
   
-  <div class="max-w-2xl mx-auto px-4">
-    <Typewriter
-      Class="text-center font-medium text-base sm:text-lg mt-10 leading-relaxed text-neutral-300"
-      text="I am constantly exploring and mastering the latest tools and technologies to create scalable, high-performance applications."
-      typingSpeed={50}
-      replay={false}
-    />
+  <div class="max-w-2xl mx-auto px-4 text-center mt-10">
+    <p class="font-medium text-base sm:text-lg leading-relaxed text-neutral-300">
+      I am constantly exploring and mastering the latest tools and technologies to create scalable, high-performance applications.
+    </p>
   </div>
 </section>
 

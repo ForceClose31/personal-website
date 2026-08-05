@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount, afterUpdate } from 'svelte';
   import Button from "$lib/components/reusable/button.svelte";  
-  import Typewriter from '$lib/components/reusable/typer.svelte';
   import Heading from '$lib/components/reusable/heading.svelte';
   import { projectsStore, type Project } from '$lib/stores/projects';
 
@@ -65,12 +64,9 @@
     subicon="fas fa-briefcase" 
   />
   
-  <Typewriter 
-    Class="text-center font-medium text-base sm:text-lg mt-6 leading-relaxed max-w-2xl mx-auto text-neutral-300 px-4"
-    text="I have worked on many projects. Here are some of the projects I have completed. Swipe left or right or use navigation buttons."
-    typingSpeed={50}
-    replay={false} 
-  />
+  <p class="text-center font-medium text-base sm:text-lg mt-6 leading-relaxed max-w-2xl mx-auto text-neutral-300 px-4">
+    I have worked on many projects. Here are some of the projects I have completed. Swipe left or right or use navigation buttons.
+  </p>
 
   <!-- Swiper Relative Wrapper keeping navigation controls close to the cards -->
   <div class="relative max-w-3xl mx-auto mt-8 px-2 sm:px-12">
@@ -188,12 +184,9 @@
   </div>
 
   <div class="flex flex-col justify-center items-center mt-10">
-    <Typewriter 
-      Class="text-center font-medium text-base mb-4 leading-relaxed text-neutral-300"
-      text="Explore more of my work on GitHub. Click the button below to check it out."
-      typingSpeed={50}
-      replay={false} 
-    />
+    <p class="text-center font-medium text-base mb-4 leading-relaxed text-neutral-300">
+      Explore more of my work on GitHub. Click the button below to check it out.
+    </p>
     <Button
       text="Github"
       link="https://github.com/ForceCLose31"

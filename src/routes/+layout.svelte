@@ -1,17 +1,23 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import logo from "../assets/images/svg.svg";
-  import Button from "$lib/components/reusable/button.svelte";    
   import Cusor from "$lib/components/reusable/cusor.svelte";    
   import AOS from 'aos';
   import 'aos/dist/aos.css';
   import "../app.css";
+  import { themeStore, type ThemeMode } from '$lib/stores/theme';
 
   let navState = false;
+  let currentTheme: ThemeMode = 'dark';
+
+  const unsubscribe = themeStore.subscribe((mode) => {
+    currentTheme = mode;
+  });
 
   const navlinks = [
     { name: "about", path: "/#about" },
     { name: "projects", path: "/#projects" },
+    { name: "terminal cli", path: "/#cli" },
     { name: "contact", path: "/#contact" }
   ];
 
@@ -20,22 +26,39 @@
   }
 
   onMount(() => {
+    themeStore.initTheme();
     AOS.init({
       duration: 1000,
       easing: 'ease-in-out',
       once: true
     });
+
+    return () => unsubscribe();
   });
 </script>
 
 <Cusor />
 <header class="px-4 py-4 fixed w-full z-50">
-  <nav class="nav px-6 py-4 flex justify-between items-center max-w-6xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 rounded-full shadow-2xl">
+  <nav class="nav px-6 py-3.5 flex justify-between items-center max-w-6xl mx-auto rounded-full shadow-2xl">
     <a href="/" class="flex items-center justify-center gap-2">
       <img src={logo} class="w-8 h-8 object-contain" alt="logo">
-      <h3 class="text-xl font-extrabold tracking-tight mb-0.5 text-white">Nur Bashori<span class="text-emerald-400">.</span></h3>
+      <h3 class="text-xl font-extrabold tracking-tight mb-0.5">Nur Bashori<span class="text-emerald-400">.</span></h3>
     </a>
     <div class="flex items-center gap-3">
+      <!-- Theme Switcher Button -->
+      <button
+        type="button"
+        on:click={themeStore.toggleTheme}
+        aria-label="Toggle Theme"
+        class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-sm hover:scale-110 hover:border-emerald-500/40 transition-all bg-white/[0.05]"
+      >
+        {#if currentTheme === 'dark'}
+          <i class="fas fa-sun text-amber-400"></i>
+        {:else}
+          <i class="fas fa-moon text-indigo-600"></i>
+        {/if}
+      </button>
+
       <div on:click={toggleNav} on:keydown={(e) => e.key === 'Enter' && toggleNav()} role="button" tabindex="0" class="p-2 text-neutral-300 hover:text-white transition-colors">
         <i class="fa-solid fa-bars-staggered text-xl cursor-pointer"></i>
       </div>
@@ -49,7 +72,7 @@
       <div class="nav-head px-2 py-3 flex justify-between items-center border-b border-white/10">
         <div class="flex items-center justify-center gap-2">
           <img src={logo} class="w-8 h-8 object-contain" alt="logo">
-          <h3 class="text-2xl font-bold mb-0.5">Nur Bashori<span class="text-emerald-400">.</span></h3>
+          <h3 class="text-2xl font-bold mb-0.5 text-white">Nur Bashori<span class="text-emerald-400">.</span></h3>
         </div>
         <i class="fas fa-x cursor-pointer text-lg text-neutral-400 hover:text-white p-2" on:click={toggleNav} on:keydown={(e) => e.key === 'Enter' && toggleNav()} role="button" tabindex="0"></i>
       </div>
@@ -61,7 +84,7 @@
             on:click={() => (navState = false)}
             class="flex justify-between items-center border border-white/5 px-6 py-4 text-xl w-full bg-white/[0.03] hover:bg-white/[0.08] hover:border-emerald-500/30 rounded-2xl mb-3 capitalize font-semibold transition-all group"
           >
-            <span class="group-hover:text-emerald-400 transition-colors">{ash.name}</span>
+            <span class="group-hover:text-emerald-400 transition-colors text-white">{ash.name}</span>
             <i class="fas fa-arrow-right text-sm text-neutral-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all"></i>
           </a>
         {/each}

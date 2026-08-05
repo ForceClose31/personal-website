@@ -3,10 +3,11 @@
   import Home from '$lib/components/sections/home.svelte';
   import Stack from '$lib/components/sections/stack.svelte';
   import Project from '$lib/components/sections/projects.svelte';
-  import Overlay from '$lib/components/reusable/overlay.svelte';
+  import CliTerminal from '$lib/components/sections/cliTerminal.svelte';
   import Contact from '$lib/components/sections/contact.svelte';
+  import Overlay from '$lib/components/reusable/overlay.svelte';
   import Loader from "$lib/components/reusable/prelaoder.svelte";
-  import ParallaxBackground from '$lib/components/reusable/parallaxBackground.svelte';
+  import QuantumParticleBackground from '$lib/components/reusable/quantumParticleBackground.svelte';
 
   let isLoading = true;
 
@@ -18,24 +19,21 @@
 
   setTimeout(() => {
     isLoading = false;
-  }, 3000);
+  }, 2500);
 </script>
 
 {#if isLoading}
   <Loader />
 {/if}
 
-<!-- Page content -->
+<!-- Page content with 3D Volumetric Parallax Background -->
 {#if !isLoading}
-  <!-- Hero Section -->
-  <Home />
-
-  <!-- Parallax Sections (Tech Stack up to before Footer) -->
-  <ParallaxBackground>
+  <QuantumParticleBackground>
+    <Home />
     <Stack />
     <Project />
+    <CliTerminal />
     <Contact />
-  </ParallaxBackground>
-
-  <Overlay />
+    <Overlay />
+  </QuantumParticleBackground>
 {/if}

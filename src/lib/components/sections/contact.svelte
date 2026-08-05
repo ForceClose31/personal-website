@@ -1,6 +1,5 @@
 <script lang="ts">
   import Heading from '$lib/components/reusable/heading.svelte';
-  import Typewriter from '$lib/components/reusable/typer.svelte';
   import emailjs from '@emailjs/browser';
 
   const socialLinks = [
@@ -24,12 +23,9 @@
     subicon="fas fa-link" 
   />
 
-  <Typewriter
-    Class="text-center mb-6 font-medium text-base sm:text-lg mt-8 leading-relaxed max-w-xl mx-auto text-neutral-300 px-4"
-    text="Contact me here and let's build a great relationship or collaborate on exciting projects."
-    typingSpeed={50}
-    replay={false}
-  />
+  <p class="text-center mb-6 font-medium text-base sm:text-lg mt-8 leading-relaxed max-w-xl mx-auto text-neutral-300 px-4">
+    Contact me here and let's build a great relationship or collaborate on exciting projects.
+  </p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8 mb-8 max-w-4xl mx-auto px-4">
     {#each socialLinks as Links}
